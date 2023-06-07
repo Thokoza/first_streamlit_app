@@ -26,7 +26,7 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 streamlit.dataframe(fruits_to_show)
 
 # new section to display fruityvice api response
-streamlit.header("Fruityvice Fruit Advice!")
+streamlit.header('Fruityvice Fruit Advice!')
 try:
 fruit_choice = streamlit.text_input('what would you like information about?')
 if not fruit_choice:
@@ -36,8 +36,7 @@ if not fruit_choice:
   # Normalise json data 
   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
   # Display Normalised json data
-streamlit.dataframe(fruityvice_normalized)
-streamlit.write('The user entered', fruit_choice)
+  streamlit.dataframe(fruityvice_normalized)
 except URLError as e: 
 streamlit.error()
 streamlit.stop()
