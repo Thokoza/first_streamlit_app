@@ -25,7 +25,6 @@ fruits_to_show = my_fruit_list.loc[fruits_selected]
 
 streamlit.dataframe(fruits_to_show)
 
-
 def get_fruity_data(this_fruit_choice):
   fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
   fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
@@ -42,23 +41,29 @@ try:
        streamlit.dataframe(back_from_function)
 except URLError as e: 
       streamlit.error()
+    
+    streamlit.header("The fruit load list contains:")
+#snowflake related functions
+def get_fruit_load_list()
+    with my_cur.cursor() as my_cnx
+    my_cur.execute("select * from fruit_load_list")
+    return my_cur.fetchall()
+ 
+ #add a button to load fruit
+if streamlit.button('Get Fruit Load List')
+   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+   my_data_rows = my_cur.fetchall()
+   streamlit.dataframe(my_data_rows)
+  
+ #allow end user to add fruit to the list 
+def insert_row_snowflake(new_fruit):
+    with  my_cnx.cursor() as my_cur
+          my_cur.execute("insert into fruit_load_list values ('from streamlit')")
+          return "Thanks for adding" + new_fruit
+      
+ add_my_fruit = streamlit.text_input('what fruit would you like to add')     
+if streamlit.button('Add a Fruit to the List'):
+   my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+   back_from_function = insert_row_snowflake(add_my_fruit)
+   streamlit.dataframe(back_from_function)
 
-
-#import snowflake.connector
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
-my_data_row = my_cur.fetchone()
-streamlit.text("Hello from Snowflake:")
-streamlit.text(my_data_row)
-
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cur.execute("select * from fruit_load_list")
-my_data_rows = my_cur.fetchall()
-streamlit.header("The fruit load list contains:")
-streamlit.dataframe(my_data_rows)
-
-add_my_fruit = streamlit.text_input('what fruit would you like to add', 'jackfruit')
-streamlit.write('Thanks for adding', add_my_fruit)
-my_cur.execute("insert into fruit_load_list values ('from streamlit')")
